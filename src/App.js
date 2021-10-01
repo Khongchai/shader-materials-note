@@ -3,12 +3,13 @@ import React, { Suspense, useRef, useState, useEffect } from "react"
 import { Canvas, useFrame, useLoader } from "@react-three/fiber"
 import img1 from "./img/Img1.jpg"
 import img2 from "./img/Img2.jpg"
+import img3 from "./img/Img3.PNG"
 import disp from "./img/displacement/10.jpg"
 import "./ImageFadeMaterial"
 
 function FadingImage() {
   const ref = useRef()
-  const [texture1, texture2, dispTexture] = useLoader(THREE.TextureLoader, [img1, img2, disp])
+  const [texture1, texture2, texture3, dispTexture] = useLoader(THREE.TextureLoader, [img1, img2, img3, disp])
   const [hovered, setHover] = useState(false)
   useFrame(() => {
     /**
@@ -20,7 +21,7 @@ function FadingImage() {
   return (
     <mesh onPointerMove={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
       <planeGeometry />
-      <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} />
+      <imageFadeMaterial ref={ref} tex={texture3} tex2={texture2} disp={dispTexture} />
     </mesh>
   )
 }
@@ -32,7 +33,7 @@ function FadingImage() {
 function lerp(x, y, t) {
   return x + (y - x) * t
   //re-arrange
-  // return x + (t * y - t * x)
+  // return x + t * y - t * x
   // return (1 - t) * x + t * y
 }
 

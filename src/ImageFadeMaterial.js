@@ -36,8 +36,8 @@ export class ImageFadeMaterial extends THREE.ShaderMaterial {
         */
         float offset = 1.0 - dispFactor;
         float lerpTexture = (disp.r + 1.0) * effectFactor;
-        vec2 distortedPosition = vec2(uv.x + dispFactor * lerpTexture, uv.y + dispFactor * lerpTexture);
-        vec2 distortedPosition2 = vec2(uv.x - offset * lerpTexture, uv.y - offset * lerpTexture);
+        vec2 distortedPosition = vec2(uv.x , uv.y);
+        vec2 distortedPosition2 = vec2(uv.x , uv.y );
 
         vec4 _texture = texture2D(tex, distortedPosition);
         vec4 _texture2 = texture2D(tex2, distortedPosition2);
