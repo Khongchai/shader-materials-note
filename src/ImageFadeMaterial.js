@@ -26,11 +26,23 @@ export class ImageFadeMaterial extends THREE.ShaderMaterial {
       void main() {
         vec2 uv = vUv;
         vec4 disp = texture2D(disp, uv);
-        vec2 distortedPosition = vec2(uv.x, uv.y + dispFactor * (disp.r*effectFactor));
-        vec2 distortedPosition2 = vec2(uv.x, uv.y - (1.0 - dispFactor) * (disp.r*effectFactor));
+
+        /*
+          With only uv.x and uv.y, it would be a cross fade between the two image, thanks to the mix function.
+          (1.0 - dispFactor) is a yOffset. Once dispFactor is 1.0, yOffset will be 0, so no more offset.
+
+          Lastly, lerpTexture is the texture we would like to use as the transition point. The texture will be 
+          visible when dispFactor is not 0 -- when lerping is in effect.
+        */
+       float yOffset = 1.0 - dispFactor;
+       float lerpTexture = disp.r * effectFactor;
+        vec2 distortedPosition = vec2(uv.x, uv.y + dispFactor * lerpTexture);
+        vec2 distortedPosition2 = vec2(uv.x, uv.y - yOffset * lerpTexture);
+
         vec4 _texture = texture2D(tex, distortedPosition);
         vec4 _texture2 = texture2D(tex2, distortedPosition2);
         vec4 finalTexture = mix(_texture, _texture2, dispFactor);
+
         gl_FragColor = finalTexture;
       }`
     })

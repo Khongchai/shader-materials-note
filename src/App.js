@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import React, { Suspense, useRef, useState } from "react"
+import React, { Suspense, useRef, useState, useEffect } from "react"
 import { Canvas, useFrame, useLoader } from "@react-three/fiber"
 import img1 from "./img/Img1.jpg"
 import img2 from "./img/Img2.jpg"
@@ -10,7 +10,13 @@ function FadingImage() {
   const ref = useRef()
   const [texture1, texture2, dispTexture] = useLoader(THREE.TextureLoader, [img1, img2, disp])
   const [hovered, setHover] = useState(false)
-  useFrame(() => (ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)))
+  useFrame(() => {
+    /**
+     * dispFactor is used in the ImageFadeMaterial to determine which image to use.
+     * hint: it's actually a value for the mix() function in glsl
+     */
+    ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)
+  })
   return (
     <mesh onPointerMove={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
       <planeGeometry />
