@@ -15,7 +15,7 @@ function FadingImage() {
      * dispFactor is used in the ImageFadeMaterial to determine which image to use.
      * hint: it's actually a value for the mix() function in glsl
      */
-    ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)
+    ref.current.dispFactor = lerp(ref.current.dispFactor, !!hovered, 0.1)
   })
   return (
     <mesh onPointerMove={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
@@ -23,6 +23,17 @@ function FadingImage() {
       <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} />
     </mesh>
   )
+}
+
+/**
+ * t = where do you want the lerping to start (0.5 = middle)
+ *
+ */
+function lerp(x, y, t) {
+  return x + (y - x) * t
+  //re-arrange
+  // return x + (t * y - t * x)
+  // return (1 - t) * x + t * y
 }
 
 export default function App() {
